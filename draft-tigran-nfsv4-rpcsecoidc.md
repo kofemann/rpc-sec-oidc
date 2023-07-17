@@ -3,7 +3,7 @@ title: "RPC-SEC-OIDC - Using OpenID Connect to Authenticate Remote Procedure Cal
 abbrev: "RPCSEC_OIDC"
 category: info
 
-docname: draft-tigran-nfsv4-rpcsecoidc-latest-latest
+docname: draft-tigran-nfsv4-rpcsecoidc-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
