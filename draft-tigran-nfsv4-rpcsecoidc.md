@@ -1,7 +1,7 @@
 ---
 title: "RPC-SEC-OIDC - Using OpenID Connect to Authenticate Remote Procedure Call"
 abbrev: "RPCSEC_OIDC"
-category: info
+category: std
 
 docname: draft-tigran-nfsv4-rpcsecoidc-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
@@ -35,7 +35,7 @@ to provide in-transit data integrity, privacy and user authentication. With the 
 GSS-API is not required anymore for data integrity and privacy, however, to ensure user identity in a shared environment,
 like public and private clouds, the Kerberos principles are still needed.
 
-Though the RPCSEC_GSS has proven it's maturity the other data access protocols, like HTTPS, rely on a different technology,
+Though the RPCSEC_GSS has proven its maturity the other data access protocols, like HTTPS, rely on a different technology,
 namely, TLS, which is responsible for in-transit data protection, and bearer tokens, like OAuth2 (RFC 6749 & RFC 6750), OpenID
 Connect, which is responsible for user authentication and authorization.
 
