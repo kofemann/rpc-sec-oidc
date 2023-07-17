@@ -49,10 +49,19 @@ This document describes a new authentication type for Remote Procedure Call that
 TODO Introduction
 
 
-# Conventions and Definitions
+# Definitions
 
-{::boilerplate bcp14-tagged}
+- OIDC: OpenID Connect, or OIDC, is an authentication protocol built on top of the OAuth 2.0 framework. It provides a standardized way for users to authenticate and authorize themselves to access web applications or APIs.
 
+- Identity Provider (IdP): The IdP is responsible for authenticating users and issuing identity tokens. Examples of popular IdPs include Google, GitHub, and Keykloak.
+
+- Identity Token: The identity token is a JSON Web Token (JWT) issued by the IdP. It contains claims about the user's identity, such as their username, email address, and any additional requested information.
+
+- Access Token: In the context of OIDC, an access token is a security token issued by the identity provider (IdP) after successful authentication and authorization. It represents the user's authorization to access protected resources. The access token is a bearer token, meaning it contains the necessary information to access resources and can be presented directly to the resource server.
+
+- Resource Server: The resource server is responsible for enforcing access control and verifying the validity and authorization of access tokens presented by clients. It holds the protected resources, such as user data, APIs, or any other restricted information.
+
+By combining OIDC with OAuth 2.0, the access token obtained through OIDC can be used to provide both authentication (verifying the user's identity) and authorization (granting access to resources) in a secure and standardized manner.
 
 # Security Considerations
 
