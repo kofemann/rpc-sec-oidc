@@ -1,0 +1,3 @@
+# Automatically generated CODEOWNERS
+# Regenerate with `make update-codeowners`
+draft-tigran-nfsv4-rpcsecoidc.md tigran.mkrtchyan@desy.de
