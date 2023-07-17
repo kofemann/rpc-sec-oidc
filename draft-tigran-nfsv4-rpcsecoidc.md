@@ -9,8 +9,8 @@ number:
 date:
 consensus: true
 v: 3
-area: Transport
-workgroup: Internet-Draft
+area: "Transport"
+workgroup: "Network File System Version 4"
 keyword:
  - RPC
  - OIDC
