@@ -21,6 +21,12 @@ author:
     ins: T. Mkrtchyan
     name: Tigran Mkrtchyan
     organization: Deutsches Elektronen-Synchrotron DESY
+    abbrev: DESY
+    street:
+      - Notkestrasse 85
+    code: 22607
+    city: Hamburg
+    country: Germany
     email: tigran.mkrtchyan@desy.de
 
 normative:
