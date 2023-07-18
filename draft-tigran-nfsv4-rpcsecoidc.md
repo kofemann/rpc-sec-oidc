@@ -69,6 +69,31 @@ TODO Introduction
 
 By combining OIDC with OAuth 2.0, the access token obtained through OIDC can be used to provide both authentication (verifying the user's identity) and authorization (granting access to resources) in a secure and standardized manner.
 
+# Flavor Number Assignment
+
+   The RPCSEC_GSS security flavor has been assigned the value of 6:
+
+~~~ xdr
+      enum auth_flavor {
+          ...
+          RPCSEC_OIDC = 8      /* RPCSEC_OIDC security flavor */
+      };
+~~~
+
+# Authentication
+
+~~~ xdr
+
+      struct opaque_auth {
+         auth_flavor flavor;
+         opaque body<400>;
+      };
+~~~
+
+the body is the token
+
+**FIXME**: 400 bytes is not enough to pass the token
+
 # Security Considerations
 
 TODO Security
