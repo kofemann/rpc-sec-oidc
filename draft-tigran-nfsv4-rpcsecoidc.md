@@ -36,23 +36,41 @@ informative:
 
 --- abstract
 
-For over two decades, Remote Procedure Call (RPC) is using Kerberos5 based GSS-API mechanism, called RPCSEC_GSS,
-to provide in-transit data integrity, privacy and user authentication. With the introduction of RPC-over-TLS the
-GSS-API is not required anymore for data integrity and privacy, however, to ensure user identity in a shared environment,
-like public and private clouds, the Kerberos principles are still needed.
+This draft considers the problem of using token-based authentication with network attached storage systems, in particular
+with NFS servers. This problem exist due to wide adoption of token based authentication for majority of services
+provided by private and public clouds. Due to lack of common security infrastructure between storage and other services,
+the end users forced either to completely disable authentication and rely on network isolation or introduce a custom,
+non standard and, probably, faulty, workarounds. This problem has become aggravated in recent years with high adoption
+of OpenID Connect technology to authenticate and delegate access to various could-based resources for large user communities.
 
-Though the RPCSEC_GSS has proven its maturity the other data access protocols, like HTTPS, rely on a different technology,
-namely, TLS, which is responsible for in-transit data protection, and bearer tokens, like OAuth2 (RFC 6749 & RFC 6750), OpenID
-Connect, which is responsible for user authentication and authorization.
-
-This document describes a new authentication type for Remote Procedure Call that enables the use of OIDC tokens in combination with RPC-over-TLS.
-
+Though, Remote Procedure Call (RPC) protocol, which is the underlying transport for NFS support multiple authentication
+mechanisms supports GSSAPI, that aims to address this issues, the lacks of integration with other cloud services makes it
+insufficient as a general purpose solution.
 
 --- middle
 
 # Introduction
 
-TODO Introduction
+The token-based access is rapidly enters into many online services, from simply reading e-mails to starting complex applications
+in large scientific environments. Moreover, the token one of the benefits of token-based authentication allows to delegate the user
+authentication to identity provides that are not required to run locally ant the sites, thus allows delegation of authentication
+to remote and even federated identity providers. This makes token-based authentication very attractive to large distributed users
+communities, like scientist and Large Hadron Collider (LHC) or Square Kilometre Array(SKA) telescope, who typically need to be
+authorized by their home institutions but get an access to shared resources available at other universities or private/public clouds.
+
+Since 2017 the computing specialists at Worldwide LHC Computing Grid (WLCG) has been working towards enabling token based authentication
+and authorisation throughout its entire middleware stack, including storage access through HTTPs protocol, which is used for date exchange between laboratories. However, those efforts doesn't cover data access from CPU clusters to locally available storage services. One
+on the reasons is the lack of standard access protocols that provide token-based access to storage.
+
+For over two decades, Remote Procedure Call (RPC) is using Kerberos5 based GSS-API mechanism,
+called RPCSEC_GSS, to provide in-transit data integrity, privacy and user authentication. With the introduction of RPC-over-TLS the
+GSS-API is not required any more for data integrity and privacy, however, to ensure user identity in a shared environment,
+like public and private clouds, the Kerberos principles are still needed.
+
+Though the RPCSEC_GSS has proven its maturity the other data access protocols, like HTTPS, rely on a different technology,
+namely, TLS, which is responsible for in-transit data protection, and bearer tokens, like OAuth2 (RFC 6749 & RFC 6750), OpenID
+Connect, which is responsible for user authentication and authorization. The adoption of those technologies for RPC protocol will
+provide direct NFS access to storage servers from token-enabed CPU clusters.
 
 
 # Definitions
