@@ -1,0 +1,202 @@
+
+
+
+
+Network File System Version 4                               T. Mkrtchyan
+Internet-Draft                                                      DESY
+Intended status: Standards Track                          18 August 2023
+Expires: 19 February 2024
+
+
+  RPC-SEC-OIDC - Using OpenID Connect to Authenticate Remote Procedure
+                                  Call
+                  draft-tigran-nfsv4-rpcsecoidc-latest
+
+Abstract
+
+   This draft considers the problem of using token-based authentication
+   with network attached storage systems, in particular with NFS
+   servers.  This problem exist due to wide adoption of token based
+   authentication for majority of services provided by private and
+   public clouds.  Due to lack of common security infrastructure between
+   storage and other services, the end users forced either to completely
+   disable authentication and rely on network isolation or introduce a
+   custom, non standard and, probably, faulty, workarounds.  This
+   problem has become aggravated in recent years with high adoption of
+   OpenID Connect technology to authenticate and delegate access to
+   various could-based resources for large user communities.
+
+   Though, Remote Procedure Call (RPC) protocol, which is the underlying
+   transport for NFS support multiple authentication mechanisms supports
+   GSSAPI, that aims to address this issues, the lacks of integration
+   with other cloud services makes it insufficient as a general purpose
+   solution.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Discussion of this document takes place on the Network File System
+   Version 4 Working Group mailing list (nfsv4@ietf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/nfsv4/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/kofemann/rpc-sec-oidc.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 19 February 2024.
+
+Copyright Notice
+
+   Copyright (c) 2023 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Definitions
+   3.  Flavor Number Assignment
+   4.  Authentication
+   5.  Security Considerations
+   6.  IANA Considerations
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   The token-based access is rapidly enters into many online services,
+   from simply reading e-mails to starting complex applications in large
+   scientific environments.  Moreover, the token one of the benefits of
+   token-based authentication allows to delegate the user authentication
+   to identity provides that are not required to run locally ant the
+   sites, thus allows delegation of authentication to remote and even
+   federated identity providers.  This makes token-based authentication
+   very attractive to large distributed users communities, like
+   scientist and Large Hadron Collider (LHC) or Square Kilometre
+   Array(SKA) telescope, who typically need to be authorized by their
+   home institutions but get an access to shared resources available at
+   other universities or private/public clouds.
+
+   Since 2017 the computing specialists at Worldwide LHC Computing Grid
+   (WLCG) has been working towards enabling token based authentication
+   and authorisation throughout its entire middleware stack, including
+   storage access through HTTPs protocol, which is used for date
+   exchange between laboratories.  However, those efforts doesn't cover
+   data access from CPU clusters to locally available storage services.
+   One on the reasons is the lack of standard access protocols that
+   provide token-based access to storage.
+
+   For over two decades, Remote Procedure Call (RPC) is using Kerberos5
+   based GSS-API mechanism, called RPCSEC_GSS, to provide in-transit
+   data integrity, privacy and user authentication.  With the
+   introduction of RPC-over-TLS the GSS-API is not required any more for
+   data integrity and privacy, however, to ensure user identity in a
+   shared environment, like public and private clouds, the Kerberos
+   principles are still needed.
+
+   Though the RPCSEC_GSS has proven its maturity the other data access
+   protocols, like HTTPS, rely on a different technology, namely, TLS,
+   which is responsible for in-transit data protection, and bearer
+   tokens, like OAuth2 (RFC 6749 & RFC 6750), OpenID Connect, which is
+   responsible for user authentication and authorization.  The adoption
+   of those technologies for RPC protocol will provide direct NFS access
+   to storage servers from token-enabed CPU clusters.
+
+2.  Definitions
+
+   *  OIDC: OpenID Connect, or OIDC, is an authentication protocol built
+      on top of the OAuth 2.0 framework.  It provides a standardized way
+      for users to authenticate and authorize themselves to access web
+      applications or APIs.
+
+   *  Identity Provider (IdP): The IdP is responsible for authenticating
+      users and issuing identity tokens.  Examples of popular IdPs
+      include Google, GitHub, and Keykloak.
+
+   *  Identity Token: The identity token is a JSON Web Token (JWT)
+      issued by the IdP.  It contains claims about the user's identity,
+      such as their username, email address, and any additional
+      requested information.
+
+   *  Access Token: In the context of OIDC, an access token is a
+      security token issued by the identity provider (IdP) after
+      successful authentication and authorization.  It represents the
+      user's authorization to access protected resources.  The access
+      token is a bearer token, meaning it contains the necessary
+      information to access resources and can be presented directly to
+      the resource server.
+
+   *  Resource Server: The resource server is responsible for enforcing
+      access control and verifying the validity and authorization of
+      access tokens presented by clients.  It holds the protected
+      resources, such as user data, APIs, or any other restricted
+      information.
+
+   By combining OIDC with OAuth 2.0, the access token obtained through
+   OIDC can be used to provide both authentication (verifying the user's
+   identity) and authorization (granting access to resources) in a
+   secure and standardized manner.
+
+3.  Flavor Number Assignment
+
+   The RPCSEC_GSS security flavor has been assigned the value of 6:
+
+         enum auth_flavor {
+             ...
+             RPCSEC_OIDC = 8      /* RPCSEC_OIDC security flavor */
+         };
+
+4.  Authentication
+
+         struct opaque_auth {
+            auth_flavor flavor;
+            opaque body<400>;
+         };
+
+   the body is the token
+
+   *FIXME*: 400 bytes is not enough to pass the token
+
+5.  Security Considerations
+
+   TODO Security
+
+6.  IANA Considerations
+
+   This document has no IANA actions.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Tigran Mkrtchyan
+   Deutsches Elektronen-Synchrotron DESY
+   Notkestrasse 85
+   22607 Hamburg
+   Germany
+   Email: tigran.mkrtchyan@desy.de
