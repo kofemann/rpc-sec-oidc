@@ -88,6 +88,25 @@ on the reasons is the lack of standard access protocols that provide token-based
 
 By combining OIDC with OAuth 2.0, the access token obtained through OIDC can be used to provide both authentication (verifying the user's identity) and authorization (granting access to resources) in a secure and standardized manner.
 
+
+# Managing user identity
+
+The Identity Token (rfc7519), similar to kerberos principals, carries sufficient information to uniquely identify user, for example, token:
+
+```json
+{
+   "sub": "2ea41db8-ecd7-47a1-8f86-7ac97ebcc466",
+   "aud": "https://example.domain/any",
+   "nbf": 1662472763,
+   "iss": "https://idp.example.domain/",
+   "exp": 1662476363,
+   "iat": 1662472763,
+   "jti": "88a1f764-8311-4210-a8cd-d5604b942d8c",
+}
+```
+
+describes the issuer (iss), issue-wide unique user identity (sub), audience (aud) to the token and the validity time window (nbf, exp).
+
 # Security Considerations
 
 TODO Security
