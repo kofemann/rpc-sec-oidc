@@ -51,17 +51,6 @@ insufficient as a general purpose solution.
 
 # Introduction
 
-The token-based access is rapidly enters into many online services, from simply reading e-mails to starting complex applications
-in large scientific environments. Moreover, the token one of the benefits of token-based authentication allows to delegate the user
-authentication to identity provides that are not required to run locally ant the sites, thus allows delegation of authentication
-to remote and even federated identity providers. This makes token-based authentication very attractive to large distributed users
-communities, like scientist and Large Hadron Collider (LHC) or Square Kilometre Array(SKA) telescope, who typically need to be
-authorized by their home institutions but get an access to shared resources available at other universities or private/public clouds.
-
-Since 2017 the computing specialists at Worldwide LHC Computing Grid (WLCG) has been working towards enabling token based authentication
-and authorisation throughout its entire middleware stack, including storage access through HTTPs protocol, which is used for date exchange between laboratories. However, those efforts doesn't cover data access from CPU clusters to locally available storage services. One
-on the reasons is the lack of standard access protocols that provide token-based access to storage.
-
 For over two decades, Remote Procedure Call (RPC) is using Kerberos5 based GSS-API mechanism,
 called RPCSEC_GSS, to provide in-transit data integrity, privacy and user authentication. With the introduction of RPC-over-TLS the
 GSS-API is not required any more for data integrity and privacy, however, to ensure user identity in a shared environment,
@@ -71,6 +60,18 @@ Though the RPCSEC_GSS has proven its maturity the other data access protocols, l
 namely, TLS, which is responsible for in-transit data protection, and bearer tokens, like OAuth2 (RFC 6749 & RFC 6750), OpenID
 Connect, which is responsible for user authentication and authorization. The adoption of those technologies for RPC protocol will
 provide direct NFS access to storage servers from token-enabed CPU clusters.
+
+The token-based access is rapidly enters into many online services, from simply reading e-mails to starting complex applications
+in large scientific environments. Moreover, one of the benefits of token-based access is a possibility to delegate
+authorization decisions to identity provides that are not required to run locally at the sites, thus allows a decentralized access
+control in a distributed environments. This makes token-based authentication and authorization very attractive to large multisite users
+communities, like scientist at Large Hadron Collider (LHC) or Square Kilometer Array(SKA) telescope, who typically need to be
+authorized by their home institutions but get an access to shared resources available at other universities or private/public clouds.
+
+Since 2017 the computing specialists at Worldwide LHC Computing Grid (WLCG) has been working towards enabling token based authentication
+and authorization throughout its entire middleware stack, including storage access through HTTPs protocol, which is used for date exchange
+between laboratories. However, those efforts doesn't cover data access from CPU clusters to locally available storage services. One
+on the reasons is the lack of standard access protocols that provide token-based access to storage.
 
 
 # Definitions
@@ -86,31 +87,6 @@ provide direct NFS access to storage servers from token-enabed CPU clusters.
 - Resource Server: The resource server is responsible for enforcing access control and verifying the validity and authorization of access tokens presented by clients. It holds the protected resources, such as user data, APIs, or any other restricted information.
 
 By combining OIDC with OAuth 2.0, the access token obtained through OIDC can be used to provide both authentication (verifying the user's identity) and authorization (granting access to resources) in a secure and standardized manner.
-
-# Flavor Number Assignment
-
-   The RPCSEC_GSS security flavor has been assigned the value of 6:
-
-~~~ xdr
-      enum auth_flavor {
-          ...
-          RPCSEC_OIDC = 8      /* RPCSEC_OIDC security flavor */
-      };
-~~~
-
-# Authentication
-
-~~~ xdr
-
-      struct opaque_auth {
-         auth_flavor flavor;
-         opaque body<400>;
-      };
-~~~
-
-the body is the token
-
-**FIXME**: 400 bytes is not enough to pass the token
 
 # Security Considerations
 
